@@ -17,7 +17,7 @@ export type Api = Schema<{
       {
         model: 'text-davinci-edit-001'
         input: string
-        instruction: 'Fix the spelling mistakes'
+        instruction: string
         n?: number
       },
       {
