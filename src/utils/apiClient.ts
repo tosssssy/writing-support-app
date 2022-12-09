@@ -108,6 +108,8 @@ export const fetchApi = async <T>(
     requestHeaders['Content-Type'] = 'application/json'
   }
 
+  requestHeaders['Authorization'] = `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`
+
   let result
   try {
     const res = await fetch(

@@ -11,30 +11,32 @@ export type Api = Schema<{
   // メソッド名: {
   //   url: [リクエストの型、レスポンスの型]
   // }
-  GET: {
-    '/proofreading/v2/typo': [
+  GET: {}
+  POST: {
+    '/v1/edits': [
       {
-        apikey: string
-        sentence: string
-        sensitivity?: 'low' | 'medium' | 'high'
+        model: 'text-davinci-edit-001'
+        input: string
+        instruction: 'Fix the spelling mistakes'
+        n?: number
       },
       {
-        resultID: string
-        status: number
-        message: string
-        inputSentence: string
-        normalizedSentence: string
-        checkedSentence: string
-        alerts: {
-          pos: number
-          word: string
-          score: number
-          suggestions: string[]
-        }[]
+        object: 'edit'
+        created: number
+        choices: [
+          {
+            text: string
+            index: number
+          },
+        ]
+        usage: {
+          prompt_tokens: number
+          completion_tokens: number
+          total_tokens: number
+        }
       },
     ]
   }
-  POST: {}
   PUT: {}
   DELETE: {}
 }>
