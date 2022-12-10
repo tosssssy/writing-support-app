@@ -1,56 +1,19 @@
 import { Box, Flex, Text } from '@mantine/core'
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
+import { useEditsAiResult } from 'hooks/useEditsAiResult'
 import RichTextEditor from 'libs/RichTextEditor'
-import { postApi } from 'utils/apiClient'
 
 const content = '<p>こんにちは</p>'
 
 export default function Home() {
   // const editorRef = useRef<Editor>(null)
   const [value, setValue] = useState(content)
-  const sentences = useMemo(
-    () =>
-      value
-        .replaceAll('<p>', '')
-        .replaceAll('</p>', '')
-        .replaceAll('<br>', '')
-        .split('。')
-        .slice(0, -1),
-    [value],
-  )
-  const [aiResult, setAiResult] = useState<
-    { key: string; suggestions: string[] }[]
-  >([])
-
-  useEffect(() => {
-    for (const sentence of sentences) {
-      if (!aiResult.every(v => v.key !== sentence)) {
-        return
-      }
-
-      ;(async () => {
-        const res = await postApi('/v1/edits', {
-          model: 'text-davinci-edit-001',
-          input: sentence,
-          instruction: 'Please make it better worded.',
-          n: 3,
-        })
-        setAiResult(v => [
-          ...v,
-          { key: sentence, suggestions: res.choices.map(v => v.text) },
-        ])
-      })()
-    }
-  }, [aiResult, sentences])
+  const { aiResult } = useEditsAiResult(value)
 
   return (
     <main>
       <br />
       {JSON.stringify(value)}
-      <br />
-      <br />
-      <br />
-      {JSON.stringify(sentences)}
       <br />
       <br />
       <br />
