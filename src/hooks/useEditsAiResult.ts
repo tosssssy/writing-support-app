@@ -35,7 +35,8 @@ export const useEditsAiResult = (value: string) => {
         ])
       })()
     }
-  }, [aiResult, sentences])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sentences])
 
   return { aiResult }
 }
