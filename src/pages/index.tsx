@@ -1,40 +1,62 @@
 import { Box, Flex, Text } from '@mantine/core'
-import { useElementSize, useInputState } from '@mantine/hooks'
-import { Editor } from '@mantine/rte'
-import { useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import RichTextEditor from 'libs/RichTextEditor'
 import { postApi } from 'utils/apiClient'
 
 const content = '<p>こんにちは</p>'
 
 export default function Home() {
-  const { ref, height } = useElementSize()
-  const [text, setText] = useInputState('')
-  const editorRef = useRef<Editor>(null)
+  // const editorRef = useRef<Editor>(null)
   const [value, setValue] = useState(content)
-  const [res, setRes] = useState<any>()
-  const sentences = value.slice(3, -4).split('</p><p>')
+  const sentences = useMemo(
+    () =>
+      value
+        .replaceAll('<p>', '')
+        .replaceAll('</p>', '')
+        .replaceAll('<br>', '')
+        .split('。')
+        .slice(0, -1),
+    [value],
+  )
+  const [aiResult, setAiResult] = useState<
+    { key: string; suggestions: string[] }[]
+  >([])
+
+  useEffect(() => {
+    for (const sentence of sentences) {
+      if (!aiResult.every(v => v.key !== sentence)) {
+        return
+      }
+
+      ;(async () => {
+        const res = await postApi('/v1/edits', {
+          model: 'text-davinci-edit-001',
+          input: sentence,
+          instruction: 'Please make it better worded.',
+          n: 3,
+        })
+        setAiResult(v => [
+          ...v,
+          { key: sentence, suggestions: res.choices.map(v => v.text) },
+        ])
+      })()
+    }
+  }, [aiResult, sentences])
+
   return (
     <main>
-      <button
-        onClick={async () => {
-          try {
-            const res = await postApi('/v1/edits', {
-              model: 'text-davinci-edit-001',
-              input: sentences[0] || '',
-              instruction: 'Fix the spelling mistakes',
-            })
-            setRes(res)
-          } catch (error) {
-            setRes(error)
-          }
-        }}
-      >
-        click
-      </button>
-      {JSON.stringify(res)}
+      <br />
+      {JSON.stringify(value)}
+      <br />
+      <br />
+      <br />
+      {JSON.stringify(sentences)}
+      <br />
+      <br />
+      <br />
+      {JSON.stringify(aiResult)}
       <Flex gap={15} m={100}>
-        <Box mt={6.5} sx={{ height, overflow: 'hidden' }}>
+        <Box mt={6.5} sx={{ height: 700, overflow: 'hidden' }}>
           {[...Array(300)].map((_, index) => (
             <Text key={index} align="right" c={'gray.6'}>
               {index + 1}
@@ -50,7 +72,7 @@ export default function Home() {
           }}
         >
           <RichTextEditor
-            ref={editorRef}
+            // ref={editorRef}
             value={value}
             onChange={setValue}
             sx={{
@@ -61,21 +83,6 @@ export default function Home() {
             controls={[]}
           />
         </Box>
-        {/* <Textarea
-          ref={ref}
-          value={text}
-          onChange={setText}
-          placeholder="テキスト"
-          autosize
-          minRows={20}
-          sx={{ width: 400 }}
-          styles={{
-            input: {
-              fontSize: 16,
-              lineHeight: 1.55,
-            },
-          }}
-        /> */}
       </Flex>
     </main>
   )

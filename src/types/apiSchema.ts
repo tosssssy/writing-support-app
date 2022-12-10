@@ -1,3 +1,4 @@
+import { EditsRequest, EditsResponse } from './edits'
 import { HttpMethod } from 'utils/apiClient'
 
 type Schema<
@@ -13,29 +14,7 @@ export type Api = Schema<{
   // }
   GET: {}
   POST: {
-    '/v1/edits': [
-      {
-        model: 'text-davinci-edit-001'
-        input: string
-        instruction: string
-        n?: number
-      },
-      {
-        object: 'edit'
-        created: number
-        choices: [
-          {
-            text: string
-            index: number
-          },
-        ]
-        usage: {
-          prompt_tokens: number
-          completion_tokens: number
-          total_tokens: number
-        }
-      },
-    ]
+    '/v1/edits': [EditsRequest, EditsResponse]
   }
   PUT: {}
   DELETE: {}
