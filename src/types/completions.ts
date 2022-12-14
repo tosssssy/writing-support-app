@@ -1,18 +1,19 @@
-export type EditsRequest = {
-  model: 'text-davinci-edit-001'
-  input: string
-  instruction: string
+export type CompletionsRequest = {
+  model: 'text-davinci-003'
+  prompt: string
   temperature?: number
+  top_p?: number
   n?: number
 }
 
-export type EditsResponse = {
-  object: 'edit'
+export type CompletionsResponse = {
+  object: 'text_completion'
   created: number
   choices: [
     {
       text: string
       index: number
+      finish_reason: string
     },
   ]
   usage: {

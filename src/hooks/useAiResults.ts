@@ -6,7 +6,7 @@ type AiResults = Array<{
   suggestions: string[]
 }>
 
-export const useEditsAiResults = (richText: string): AiResults => {
+export const useAiResults = (richText: string): AiResults => {
   const [aiResults, setAiResults] = useState<AiResults>([])
 
   const sentences = useMemo(
@@ -30,7 +30,8 @@ export const useEditsAiResults = (richText: string): AiResults => {
         const res = await postApi('/v1/edits', {
           model: 'text-davinci-edit-001',
           input: sentence,
-          instruction: 'Please make it better worded.',
+          instruction: 'Fix mistakes',
+          temperature: 0.5,
           n: 3,
         })
         setAiResults(v => [

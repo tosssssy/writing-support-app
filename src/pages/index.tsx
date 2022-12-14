@@ -1,14 +1,14 @@
 import { Box, Flex, Text } from '@mantine/core'
-import { useState } from 'react'
-import { useEditsAiResults } from 'hooks/useEditsAiResults'
+import { useDebouncedState } from '@mantine/hooks'
+import { useAiResults } from 'hooks/useAiResults'
 import RichTextEditor from 'libs/RichTextEditor'
 
 const content = '<p>こんにちは</p>'
 
 export default function Home() {
   // const editorRef = useRef<Editor>(null)
-  const [value, setValue] = useState(content)
-  const aiResults = useEditsAiResults(value)
+  const [value, setValue] = useDebouncedState(content, 400)
+  const aiResults = useAiResults(value)
 
   return (
     <main>
