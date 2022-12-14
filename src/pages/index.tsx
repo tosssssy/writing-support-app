@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from '@mantine/core'
 import { useState } from 'react'
-import { useEditsAiResult } from 'hooks/useEditsAiResult'
+import { useEditsAiResults } from 'hooks/useEditsAiResults'
 import RichTextEditor from 'libs/RichTextEditor'
 
 const content = '<p>こんにちは</p>'
@@ -8,7 +8,7 @@ const content = '<p>こんにちは</p>'
 export default function Home() {
   // const editorRef = useRef<Editor>(null)
   const [value, setValue] = useState(content)
-  const { aiResult } = useEditsAiResult(value)
+  const aiResults = useEditsAiResults(value)
 
   return (
     <main>
@@ -17,7 +17,7 @@ export default function Home() {
       <br />
       <br />
       <br />
-      {JSON.stringify(aiResult)}
+      {JSON.stringify(aiResults)}
       <Flex gap={15} m={100}>
         <Box mt={6.5} sx={{ height: 700, overflow: 'hidden' }}>
           {[...Array(300)].map((_, index) => (

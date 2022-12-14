@@ -1,24 +1,28 @@
 import { useEffect, useMemo, useState } from 'react'
 import { postApi } from 'utils/apiClient'
 
-export const useEditsAiResult = (value: string) => {
+type AiResults = Array<{
+  key: string
+  suggestions: string[]
+}>
+
+export const useEditsAiResults = (richText: string): AiResults => {
+  const [aiResults, setAiResults] = useState<AiResults>([])
+
   const sentences = useMemo(
     () =>
-      value
+      richText
         .replaceAll('<p>', '')
         .replaceAll('</p>', '')
         .replaceAll('<br>', '')
         .split('。')
         .slice(0, -1),
-    [value],
+    [richText],
   )
-  const [aiResult, setAiResult] = useState<
-    { key: string; suggestions: string[] }[]
-  >([])
 
   useEffect(() => {
     for (const sentence of sentences) {
-      if (!aiResult.every(v => v.key !== sentence)) {
+      if (!aiResults.every(v => v.key !== sentence)) {
         return
       }
 
@@ -29,7 +33,7 @@ export const useEditsAiResult = (value: string) => {
           instruction: 'Please make it better worded.',
           n: 3,
         })
-        setAiResult(v => [
+        setAiResults(v => [
           ...v,
           { key: sentence, suggestions: res.choices.map(v => v.text) },
         ])
@@ -38,5 +42,5 @@ export const useEditsAiResult = (value: string) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sentences])
 
-  return { aiResult }
+  return aiResults
 }
