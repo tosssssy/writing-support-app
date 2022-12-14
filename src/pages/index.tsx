@@ -1,9 +1,9 @@
-import { Accordion, Box, Flex, List, Text } from '@mantine/core'
+import { Accordion, Box, CloseButton, Flex, List, Text } from '@mantine/core'
 import { useMemo, useState } from 'react'
 import { useAiResults } from 'hooks/useAiResults'
 import RichTextEditor from 'libs/RichTextEditor'
 
-const content = '<p>こんにちは</p>'
+const content = '<p>テキスト</p>'
 
 export default function Home() {
   const [value, setValue] = useState(content)
@@ -57,16 +57,26 @@ export default function Home() {
           </Box>
         </Flex>
         <Box w="100%">
-          <Accordion variant="separated" multiple>
+          <Accordion
+            variant="separated"
+            chevronPosition="left"
+            chevronSize={20}
+            multiple
+          >
             {aiResults.map(result => {
               if (sentences.includes(result.key)) {
                 return (
                   <Accordion.Item key={result.key} value={result.key}>
-                    <Accordion.Control>{result.key}</Accordion.Control>
+                    <Flex align={'center'} mr="xs">
+                      <Accordion.Control>{result.key}</Accordion.Control>
+                      <CloseButton />
+                    </Flex>
                     <Accordion.Panel>
                       <List type="ordered">
                         {result.suggestions.map((str, index) => (
-                          <List.Item key={index}>{str}</List.Item>
+                          <List.Item key={index} p="xs">
+                            <Text fz="sm">{str}</Text>
+                          </List.Item>
                         ))}
                       </List>
                     </Accordion.Panel>
