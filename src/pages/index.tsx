@@ -1,7 +1,8 @@
 import { Accordion, Box, CloseButton, Flex, List, Text } from '@mantine/core'
 import { useMemo, useState } from 'react'
+import { AppLayout } from 'components/AppLayout'
+import { Editor } from 'components/Editor'
 import { useAiResults } from 'hooks/useAiResults'
-import RichTextEditor from 'libs/RichTextEditor'
 
 const content = '<p>テキスト</p>'
 
@@ -20,42 +21,15 @@ export default function Home() {
   const aiResults = useAiResults(sentences)
 
   return (
-    <main>
+    <AppLayout>
       {/* <br />
       {JSON.stringify(sentences)}
       <br />
       <br />
       <br />
       {JSON.stringify(aiResults)} */}
-      <Flex gap="xl" mt="xl" mx="auto" w="85%">
-        <Flex gap="md">
-          <Box mt={6.5} sx={{ height: 700, overflow: 'hidden' }}>
-            {[...Array(300)].map((_, index) => (
-              <Text key={index} align="right" c={'gray.6'}>
-                {index + 1}
-              </Text>
-            ))}
-          </Box>
-          <Box
-            // ref={ref}
-            sx={{
-              width: 400,
-              wordWrap: 'break-word',
-              p: { margin: '0 !important', fontSize: 16, lineHeight: 1.55 },
-            }}
-          >
-            <RichTextEditor
-              value={value}
-              onChange={setValue}
-              sx={{
-                minHeight: 500,
-                height: '100%',
-              }}
-              styles={{ toolbar: { padding: 0 } }}
-              controls={[]}
-            />
-          </Box>
-        </Flex>
+      <Flex>
+        <Editor value={value} onChange={setValue} />
         <Box w="100%">
           <Accordion
             variant="separated"
@@ -87,6 +61,6 @@ export default function Home() {
           </Accordion>
         </Box>
       </Flex>
-    </main>
+    </AppLayout>
   )
 }
