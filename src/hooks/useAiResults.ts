@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react'
+import { AiResults } from 'types/common'
 import { postApi } from 'utils/apiClient'
-
-type AiResults = Array<{
-  key: string
-  suggestions: string[]
-}>
 
 export const useAiResults = (sentences: string[]): AiResults => {
   const [aiResults, setAiResults] = useState<AiResults>([])
