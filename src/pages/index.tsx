@@ -1,4 +1,5 @@
 import { Paper, SimpleGrid, Stack } from '@mantine/core'
+import { useDebouncedState } from '@mantine/hooks'
 import { useMemo, useState } from 'react'
 import { AppLayout } from 'components/AppLayout'
 import { Editor } from 'components/Editor'
@@ -8,7 +9,7 @@ import { useAiResults } from 'hooks/useAiResults'
 import { toSentences } from 'utils/sentence'
 
 export default function Home() {
-  const [richText, setRichText] = useState('<p>テキスト</p>')
+  const [richText, setRichText] = useDebouncedState('<p>テキスト</p>', 400)
   const sentences = useMemo(() => toSentences(richText), [richText])
   const [aiResults, setAiResults] = useAiResults(sentences)
 
