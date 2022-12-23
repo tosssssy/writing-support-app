@@ -6,10 +6,8 @@ import { Suggestions } from 'components/Suggestions'
 import { TabList } from 'components/TabList'
 import { useAiResults } from 'hooks/useAiResults'
 
-const content = '<p>テキスト</p>'
-
 export default function Home() {
-  const [value, setValue] = useState(content)
+  const [value, setValue] = useState('<p>テキスト</p>')
   const sentences = useMemo(
     () =>
       value
