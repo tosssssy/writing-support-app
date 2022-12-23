@@ -9,12 +9,19 @@ export type EditsRequest = {
 export type EditsResponse = {
   object: 'edit'
   created: number
-  choices: [
-    {
-      text: string
-      index: number
-    },
-  ]
+  choices: Array<
+    | {
+        text: string
+        index: number
+      }
+    | {
+        error: {
+          message: string
+          type: string
+        }
+      }
+  >
+
   usage: {
     prompt_tokens: number
     completion_tokens: number

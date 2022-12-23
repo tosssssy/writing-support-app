@@ -35,7 +35,11 @@ export const useAiResults = (
               v.key === sentence
                 ? {
                     ...v,
-                    suggestions: res.choices.map(v => sanitizeSentence(v.text)),
+                    suggestions: res.choices.map(v =>
+                      Object.hasOwn(v, 'text')
+                        ? sanitizeSentence((v as { text: string }).text)
+                        : 'suggest error',
+                    ),
                   }
                 : v,
             ),
