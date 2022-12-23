@@ -66,12 +66,14 @@ type SuggestionsProps = {
   aiResults: AiResults
   sentences: string[]
   onReplaceSentence: (from: string, to: string) => void
+  onHidden: (key: AiResults[number]['key']) => void
 }
 
 export const Suggestions: FC<SuggestionsProps> = ({
   aiResults,
   sentences,
   onReplaceSentence,
+  onHidden,
 }) => {
   return (
     <Box w="100%">
@@ -82,18 +84,18 @@ export const Suggestions: FC<SuggestionsProps> = ({
         multiple
       >
         {aiResults.map(result => {
-          if (sentences.includes(result.key)) {
+          if (sentences.includes(result.key) && !result.hidden) {
             return (
               <Accordion.Item key={result.key} value={result.key}>
                 <Flex align={'center'} mr="xs">
                   <Accordion.Control>{result.key}</Accordion.Control>
-                  <CloseButton />
+                  <CloseButton onClick={() => onHidden(result.key)} />
                 </Flex>
 
                 <Accordion.Panel>
                   <List type="ordered">
                     {result.suggestions.map((str, index) => (
-                      <List.Item key={index} p="xs">
+                      <List.Item key={index + str} p="xs">
                         <Item
                           sentence={str}
                           onReplace={to => onReplaceSentence(result.key, to)}

@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { AiResults } from 'types/common'
 import { postApi } from 'utils/apiClient'
+import { sanitizeSentence } from 'utils/sentence'
 
-export const useAiResults = (sentences: string[]): AiResults => {
+export const useAiResults = (
+  sentences: string[],
+): [AiResults, Dispatch<SetStateAction<AiResults>>] => {
   const [aiResults, setAiResults] = useState<AiResults>([])
 
   useEffect(() => {
@@ -18,7 +21,11 @@ export const useAiResults = (sentences: string[]): AiResults => {
           })
           setAiResults(v => [
             ...v,
-            { key: sentence, suggestions: res.choices.map(v => v.text) },
+            {
+              key: sentence,
+              suggestions: res.choices.map(v => sanitizeSentence(v.text)),
+              hidden: false,
+            },
           ])
         })()
       }
@@ -26,5 +33,5 @@ export const useAiResults = (sentences: string[]): AiResults => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sentences])
 
-  return aiResults
+  return [aiResults, setAiResults]
 }

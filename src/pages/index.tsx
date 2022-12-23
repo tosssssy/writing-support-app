@@ -5,20 +5,12 @@ import { Editor } from 'components/Editor'
 import { Suggestions } from 'components/Suggestions'
 import { TabList } from 'components/TabList'
 import { useAiResults } from 'hooks/useAiResults'
+import { toSentences } from 'utils/sentence'
 
 export default function Home() {
-  const [value, setValue] = useState('<p>テキスト</p>')
-  const sentences = useMemo(
-    () =>
-      value
-        .replaceAll('<p>', '')
-        .replaceAll('</p>', '')
-        .replaceAll('<br>', '')
-        .split('。')
-        .slice(0, -1),
-    [value],
-  )
-  const aiResults = useAiResults(sentences)
+  const [richText, setRichText] = useState('<p>テキスト</p>')
+  const sentences = useMemo(() => toSentences(richText), [richText])
+  const [aiResults, setAiResults] = useAiResults(sentences)
 
   const [activeTab, setActiveTab] = useState<string | null>('suggestions')
 
@@ -26,13 +18,14 @@ export default function Home() {
     <AppLayout>
       <SimpleGrid cols={2} spacing="xl">
         <Paper radius={'md'} shadow="sm" p="md" withBorder h={'100%'}>
-          <Editor value={value} onChange={setValue} />
+          <Editor value={richText} onChange={setRichText} />
         </Paper>
 
         <Stack>
           <TabList
             suggestionsCount={
-              aiResults.filter(v => sentences.includes(v.key)).length
+              aiResults.filter(v => sentences.includes(v.key) && !v.hidden)
+                .length
             }
             value={activeTab}
             onTabChange={setActiveTab}
@@ -44,8 +37,15 @@ export default function Home() {
                 aiResults={aiResults}
                 sentences={sentences}
                 onReplaceSentence={(from, to) =>
-                  setValue(value.replace(from, to))
+                  setRichText(richText.replace(from, to))
                 }
+                onHidden={key => {
+                  setAiResults(results =>
+                    results.map(v =>
+                      key === v.key ? { ...v, hidden: true } : v,
+                    ),
+                  )
+                }}
               />
             )}
             {activeTab === 'search' && <>search</>}
