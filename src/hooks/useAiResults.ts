@@ -11,6 +11,17 @@ export const useAiResults = (
   useEffect(() => {
     for (const sentence of sentences) {
       if (aiResults.every(v => v.key !== sentence)) {
+        // fetchする前にsuggestionsを[]でセットする
+        setAiResults(v => [
+          ...v,
+          {
+            key: sentence,
+            suggestions: [],
+            hidden: false,
+          },
+        ])
+
+        // fetchした後にsuggestionsを更新する
         ;(async () => {
           const res = await postApi('/v1/edits', {
             model: 'text-davinci-edit-001',
@@ -19,14 +30,16 @@ export const useAiResults = (
             temperature: 0.5,
             n: 3,
           })
-          setAiResults(v => [
-            ...v,
-            {
-              key: sentence,
-              suggestions: res.choices.map(v => sanitizeSentence(v.text)),
-              hidden: false,
-            },
-          ])
+          setAiResults(result =>
+            result.map(v =>
+              v.key === sentence
+                ? {
+                    ...v,
+                    suggestions: res.choices.map(v => sanitizeSentence(v.text)),
+                  }
+                : v,
+            ),
+          )
         })()
       }
     }
