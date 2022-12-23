@@ -8,7 +8,6 @@ export const useAiResults = (sentences: string[]): AiResults => {
   useEffect(() => {
     for (const sentence of sentences) {
       if (aiResults.every(v => v.key !== sentence)) {
-        console.log('fetch!' + sentence)
         ;(async () => {
           const res = await postApi('/v1/edits', {
             model: 'text-davinci-edit-001',
