@@ -1,7 +1,7 @@
 import { Paper, SimpleGrid, Stack } from '@mantine/core'
-import { useDebouncedState } from '@mantine/hooks'
 import { useMemo, useState } from 'react'
 import { AppLayout } from 'components/AppLayout'
+import { Counter } from 'components/Counter'
 import { Editor } from 'components/Editor'
 import { Suggestions } from 'components/Suggestions'
 import { TabList } from 'components/TabList'
@@ -9,7 +9,7 @@ import { useAiResults } from 'hooks/useAiResults'
 import { toSentences } from 'utils/sentence'
 
 export default function Home() {
-  const [richText, setRichText] = useDebouncedState('<p>テキスト</p>', 400)
+  const [richText, setRichText] = useState('<p>テキスト</p>')
   const sentences = useMemo(() => toSentences(richText), [richText])
   const [aiResults, setAiResults] = useAiResults(sentences)
 
@@ -18,9 +18,14 @@ export default function Home() {
   return (
     <AppLayout>
       <SimpleGrid cols={2} spacing="xl" h={'100%'}>
-        <Paper radius={'md'} shadow="sm" p="md">
-          <Editor value={richText} onChange={setRichText} />
-        </Paper>
+        <Stack>
+          <Paper radius={'md'} shadow="xs" p="md">
+            <Counter richText={richText} />
+          </Paper>
+          <Paper radius={'md'} shadow="xs" p="md" pl="xs" sx={{ flex: 1 }}>
+            <Editor value={richText} onChange={setRichText} />
+          </Paper>
+        </Stack>
 
         <Stack>
           <TabList
@@ -32,7 +37,7 @@ export default function Home() {
             onTabChange={setActiveTab}
           />
 
-          <Paper radius={'md'} shadow="sm" p="md" h={'100%'}>
+          <Paper radius={'md'} shadow="xs" p="md" h={'100%'}>
             {activeTab === 'suggestions' && (
               <Suggestions
                 aiResults={aiResults}

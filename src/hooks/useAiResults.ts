@@ -1,3 +1,4 @@
+import { useDebouncedValue } from '@mantine/hooks'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { AiResults } from 'types/common'
 import { postApi } from 'utils/apiClient'
@@ -7,9 +8,10 @@ export const useAiResults = (
   sentences: string[],
 ): [AiResults, Dispatch<SetStateAction<AiResults>>] => {
   const [aiResults, setAiResults] = useState<AiResults>([])
+  const [debouncedSentences] = useDebouncedValue(sentences, 400)
 
   useEffect(() => {
-    for (const sentence of sentences) {
+    for (const sentence of debouncedSentences) {
       if (aiResults.every(v => v.key !== sentence)) {
         // fetchする前にsuggestionsを[]でセットする
         setAiResults(v => [
@@ -48,7 +50,7 @@ export const useAiResults = (
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sentences])
+  }, [debouncedSentences])
 
   return [aiResults, setAiResults]
 }
