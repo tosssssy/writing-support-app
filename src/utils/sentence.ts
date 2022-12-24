@@ -18,3 +18,14 @@ export const toSentences = (richText: string): string[] => {
 // 不自然なスペースと「。」を取り除き、「。」で終わる文章にする。
 export const sanitizeSentence = (sentence: string): string =>
   sentence.trim().replaceAll('。', '') + '。'
+
+// richTextから文字数をカウントすする
+export const calcStringLength = (richText: string): number => {
+  if (typeof window !== 'object') {
+    return 0
+  }
+
+  const div = window.document.createElement('div')
+  div.innerHTML = richText
+  return div.innerText.length
+}
