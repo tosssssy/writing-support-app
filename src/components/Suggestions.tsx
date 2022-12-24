@@ -9,6 +9,8 @@ import {
   ActionIcon,
   Button,
   Group,
+  Loader,
+  Center,
 } from '@mantine/core'
 import { IconReplace } from '@tabler/icons'
 import { FC, useState } from 'react'
@@ -97,16 +99,22 @@ export const Suggestions: FC<SuggestionsProps> = ({
                 </Flex>
 
                 <Accordion.Panel>
-                  <List type="ordered">
-                    {result.suggestions.map((str, index) => (
-                      <List.Item key={index + str} p="xs">
-                        <Item
-                          sentence={str}
-                          onReplace={to => onReplaceSentence(result.key, to)}
-                        />
-                      </List.Item>
-                    ))}
-                  </List>
+                  {result.suggestions.length === 0 ? (
+                    <Center>
+                      <Loader size={'sm'} />
+                    </Center>
+                  ) : (
+                    <List type="ordered">
+                      {result.suggestions.map((str, index) => (
+                        <List.Item key={index + str} p="xs">
+                          <Item
+                            sentence={str}
+                            onReplace={to => onReplaceSentence(result.key, to)}
+                          />
+                        </List.Item>
+                      ))}
+                    </List>
+                  )}
                 </Accordion.Panel>
               </Accordion.Item>
             )
