@@ -17,8 +17,8 @@ export default function Home() {
 
   return (
     <AppLayout>
-      <SimpleGrid cols={2} spacing="xl">
-        <Paper radius={'md'} shadow="sm" p="md" withBorder h={'100%'}>
+      <SimpleGrid cols={2} spacing="xl" h={'100%'}>
+        <Paper radius={'md'} shadow="sm" p="md">
           <Editor value={richText} onChange={setRichText} />
         </Paper>
 
@@ -32,7 +32,7 @@ export default function Home() {
             onTabChange={setActiveTab}
           />
 
-          <Paper radius={'md'} shadow="sm" p="md" withBorder h={'100%'}>
+          <Paper radius={'md'} shadow="sm" p="md" h={'100%'}>
             {activeTab === 'suggestions' && (
               <Suggestions
                 aiResults={aiResults}

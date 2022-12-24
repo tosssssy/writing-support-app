@@ -6,10 +6,18 @@ type EditorProps = {} & ComponentProps<typeof RichTextEditor>
 
 export const Editor: FC<EditorProps> = ({ ...editorProps }) => {
   return (
-    <Flex w={'100%'} h={'100%'} gap={4}>
-      <Box mt={12} sx={{ overflow: 'hidden' }}>
+    <Flex w={'100%'} h={'100%'} gap={4} sx={{ overflowY: 'hidden' }}>
+      <Box mt={12} w={30} pos="relative">
         {[...Array(300)].map((_, index) => (
-          <Text key={index} pr={3} align="right" c={'gray.6'}>
+          <Text
+            key={index}
+            pr={3}
+            w={30}
+            align="right"
+            c={'gray.6'}
+            pos="absolute"
+            top={index * 24.8}
+          >
             {index + 1}
           </Text>
         ))}

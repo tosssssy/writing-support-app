@@ -35,11 +35,12 @@ export const AppLayout: FC<AppLayoutProps> = ({ children }) => {
         </Header>
       }
       styles={theme => ({
+        body: { minHeight: '100vh' },
         main: {
           backgroundColor:
             theme.colorScheme === 'dark'
               ? theme.colors.dark[8]
-              : theme.colors.gray[0],
+              : theme.colors.gray[1],
         },
       })}
     >
