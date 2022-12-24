@@ -34,7 +34,11 @@ const Item: FC<ItemProps> = ({ sentence, onReplace }) => {
         onChange={setOpened}
       >
         <Popover.Target>
-          <ActionIcon variant="transparent" onClick={() => setOpened(v => !v)}>
+          <ActionIcon
+            mt={-2}
+            variant="transparent"
+            onClick={() => setOpened(v => !v)}
+          >
             <IconReplace size={18} />
           </ActionIcon>
         </Popover.Target>
