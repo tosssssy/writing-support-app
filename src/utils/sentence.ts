@@ -20,7 +20,7 @@ export const sanitizeSentence = (sentence: string): string =>
   sentence.trim().replaceAll('。', '') + '。'
 
 // richTextから文字数をカウントすする
-export const calcStringLength = (richText: string): number => {
+export const calcStringLengthFromRichText = (richText: string): number => {
   if (typeof window !== 'object') {
     return 0
   }

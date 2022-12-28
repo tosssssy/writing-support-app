@@ -1,7 +1,7 @@
 import { Flex, Text } from '@mantine/core'
 import { useTextSelection } from '@mantine/hooks'
 import { FC } from 'react'
-import { calcStringLength } from 'utils/sentence'
+import { calcStringLengthFromRichText } from 'utils/sentence'
 
 type CounterProps = {
   richText: string
@@ -12,7 +12,9 @@ export const Counter: FC<CounterProps> = ({ richText }) => {
   return (
     <Flex gap={'xl'}>
       {/* hydration error回避のためにSSR時には初期テキストの文字数を渡している */}
-      <Text size="sm">文字数：{calcStringLength(richText) || 4}</Text>
+      <Text size="sm">
+        文字数：{calcStringLengthFromRichText(richText) || 4}
+      </Text>
 
       <Text
         size="sm"
