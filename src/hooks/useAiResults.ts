@@ -1,5 +1,6 @@
 import { useDebouncedValue } from '@mantine/hooks'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useAppConfig } from 'hooks/useAppConfig'
 import { AiResults } from 'types/common'
 import { postApi } from 'utils/apiClient'
 import { sanitizeSentence } from 'utils/sentence'
@@ -7,6 +8,8 @@ import { sanitizeSentence } from 'utils/sentence'
 export const useAiResults = (
   sentences: string[],
 ): [AiResults, Dispatch<SetStateAction<AiResults>>] => {
+  const [config] = useAppConfig()
+
   const [aiResults, setAiResults] = useState<AiResults>([])
   const [debouncedSentences] = useDebouncedValue(sentences, 400)
 
@@ -28,8 +31,8 @@ export const useAiResults = (
           const res = await postApi('/v1/edits', {
             model: 'text-davinci-edit-001',
             input: sentence,
-            instruction: 'Fix mistakes',
-            temperature: 0.5,
+            instruction: config.suggestionDirection,
+            temperature: config.suggestionSensitivity / 100,
             n: 3,
           })
           setAiResults(result =>

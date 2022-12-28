@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import { AppLayout } from 'components/AppLayout'
 import { Counter } from 'components/Counter'
 import { Editor } from 'components/Editor'
+import { Settings } from 'components/Settings'
 import { Suggestions } from 'components/Suggestions'
 import { TabList } from 'components/TabList'
 import { useAiResults } from 'hooks/useAiResults'
@@ -54,8 +55,8 @@ export default function Home() {
                 }}
               />
             )}
-            {activeTab === 'search' && <>search</>}
-            {activeTab === 'settings' && <>settings</>}
+            {activeTab === 'search' && <></>}
+            {activeTab === 'settings' && <Settings />}
           </Paper>
         </Stack>
       </SimpleGrid>
