@@ -2,9 +2,30 @@ import { useDebouncedValue } from '@mantine/hooks'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useAppConfig } from 'hooks/useAppConfig'
 import { AiResults } from 'types/common'
+import { EditsRequest, EditsResponse } from 'types/edits'
 import { ApiResponseError, postApi } from 'utils/apiClient'
+import { isEmptyObj } from 'utils/isEmptyObj'
 import { sanitizeSentence } from 'utils/sentence'
 
+// apiKeyがあったら直接fetch、なかったらapi routesを通してfetch
+const fetchEdits = async (apiKey: string | undefined, body: EditsRequest) => {
+  let result: EditsResponse
+  if (apiKey) {
+    console.log('ari')
+    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + '/v1/edits', {
+      method: 'POST',
+      body: isEmptyObj(body) ? null : JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+    })
+    result = await res.json()
+  } else {
+    result = await postApi('/api/edits', body)
+  }
+  return result
+}
 export const useAiResults = (
   sentences: string[],
 ): [AiResults, Dispatch<SetStateAction<AiResults>>] => {
@@ -29,7 +50,7 @@ export const useAiResults = (
         // fetchした後にsuggestionsを更新する
         ;(async () => {
           try {
-            const res = await postApi('/api/edits', {
+            const res = await fetchEdits(config.apiKey, {
               model: 'text-davinci-edit-001',
               input: sentence,
               instruction: config.suggestionDirection,

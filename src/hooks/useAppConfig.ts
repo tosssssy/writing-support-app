@@ -7,13 +7,13 @@ export type AppConfig = {
     | 'Looking for a paraphrase.'
     | 'Make it as good as possible.'
   suggestionSensitivity: number
-  apiKey: string
+  apiKey: string | undefined
 }
 
 const configAtom = atom<AppConfig>({
   suggestionDirection: 'Make it a natural sentence.',
   suggestionSensitivity: 60,
-  apiKey: '',
+  apiKey: undefined,
 })
 
 export const useAppConfig = () => useAtom(configAtom)
