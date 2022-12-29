@@ -11,7 +11,6 @@ import { sanitizeSentence } from 'utils/sentence'
 const fetchEdits = async (apiKey: string | undefined, body: EditsRequest) => {
   let result: EditsResponse
   if (apiKey) {
-    console.log('ari')
     const res = await fetch(process.env.NEXT_PUBLIC_API_URL + '/v1/edits', {
       method: 'POST',
       body: isEmptyObj(body) ? null : JSON.stringify(body),
