@@ -1,4 +1,3 @@
-import { CompletionsRequest, CompletionsResponse } from './completions'
 import { EditsRequest, EditsResponse } from './edits'
 import { HttpMethod } from 'utils/apiClient'
 
@@ -15,8 +14,7 @@ export type Api = Schema<{
   // }
   GET: {}
   POST: {
-    '/v1/edits': [EditsRequest, EditsResponse]
-    '/v1/completions': [CompletionsRequest, CompletionsResponse]
+    '/api/edits': [EditsRequest, EditsResponse]
   }
   PUT: {}
   DELETE: {}

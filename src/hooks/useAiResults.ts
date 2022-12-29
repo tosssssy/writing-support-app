@@ -2,7 +2,7 @@ import { useDebouncedValue } from '@mantine/hooks'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useAppConfig } from 'hooks/useAppConfig'
 import { AiResults } from 'types/common'
-import { postApi } from 'utils/apiClient'
+import { ApiResponseError, postApi } from 'utils/apiClient'
 import { sanitizeSentence } from 'utils/sentence'
 
 export const useAiResults = (
@@ -28,27 +28,33 @@ export const useAiResults = (
 
         // fetchした後にsuggestionsを更新する
         ;(async () => {
-          const res = await postApi('/v1/edits', {
-            model: 'text-davinci-edit-001',
-            input: sentence,
-            instruction: config.suggestionDirection,
-            temperature: config.suggestionSensitivity / 100,
-            n: 3,
-          })
-          setAiResults(result =>
-            result.map(v =>
-              v.key === sentence
-                ? {
-                    ...v,
-                    suggestions: res.choices.map(v =>
-                      Object.hasOwn(v, 'text')
-                        ? sanitizeSentence((v as { text: string }).text)
-                        : 'suggest error',
-                    ),
-                  }
-                : v,
-            ),
-          )
+          try {
+            const res = await postApi('/api/edits', {
+              model: 'text-davinci-edit-001',
+              input: sentence,
+              instruction: config.suggestionDirection,
+              temperature: config.suggestionSensitivity / 100,
+              n: 3,
+            })
+            setAiResults(result =>
+              result.map(v =>
+                v.key === sentence
+                  ? {
+                      ...v,
+                      suggestions: res.choices.map(v =>
+                        Object.hasOwn(v, 'text')
+                          ? sanitizeSentence((v as { text: string }).text)
+                          : 'suggest error',
+                      ),
+                    }
+                  : v,
+              ),
+            )
+          } catch (error) {
+            if (error instanceof ApiResponseError) {
+              console.error(error)
+            }
+          }
         })()
       }
     }

@@ -108,18 +108,13 @@ export const fetchApi = async <T>(
     requestHeaders['Content-Type'] = 'application/json'
   }
 
-  requestHeaders['Authorization'] = `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`
-
   let result
   try {
-    const res = await fetch(
-      process.env.NEXT_PUBLIC_API_URL + encodeURI(requestUrl),
-      {
-        method,
-        body: isEmptyObj(requestParams) ? null : JSON.stringify(requestParams),
-        headers: { ...requestHeaders },
-      },
-    )
+    const res = await fetch(encodeURI(requestUrl), {
+      method,
+      body: isEmptyObj(requestParams) ? null : JSON.stringify(requestParams),
+      headers: { ...requestHeaders },
+    })
 
     if (!res.ok) {
       throw await ApiResponseError.init(res)
