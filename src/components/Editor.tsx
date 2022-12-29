@@ -1,14 +1,16 @@
 import { Flex, Box, Text } from '@mantine/core'
+import { useResizeObserver } from '@mantine/hooks'
 import { ComponentProps, FC } from 'react'
 import RichTextEditor from 'libs/RichTextEditor'
 
 type EditorProps = {} & ComponentProps<typeof RichTextEditor>
 
 export const Editor: FC<EditorProps> = ({ ...editorProps }) => {
+  const [ref, { height }] = useResizeObserver()
   return (
     <Flex w={'100%'} h={'100%'} gap={4} sx={{ overflowY: 'hidden' }}>
       <Box mt={12} w={30} pos="relative">
-        {[...Array(300)].map((_, index) => (
+        {[...Array(~~(height / 24.8))].map((_, index) => (
           <Text
             key={index}
             pr={3}
@@ -23,6 +25,7 @@ export const Editor: FC<EditorProps> = ({ ...editorProps }) => {
         ))}
       </Box>
       <Box
+        ref={ref}
         sx={{
           width: '100%',
           wordWrap: 'break-word',
