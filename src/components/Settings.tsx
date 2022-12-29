@@ -29,8 +29,8 @@ export const Settings: FC<SettingsProps> = ({}) => {
   const [config, setConfig] = useAppConfig()
 
   const handleChange = useCallback(
-    (update: Partial<AppConfig>) => setConfig({ ...config, ...update }),
-    [config, setConfig],
+    (update: Partial<AppConfig>) => setConfig(v => ({ ...v, ...update })),
+    [setConfig],
   )
   return (
     <Stack spacing={'xl'}>
