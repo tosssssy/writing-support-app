@@ -22,7 +22,13 @@ export const AppLayout: FC<AppLayoutProps> = ({ children }) => {
       header={
         <Header height={60}>
           <Flex h="100%" px="xl" align="center" justify="space-between">
-            <Title order={1}>Writing Support App</Title>
+            <Title
+              order={1}
+              variant="gradient"
+              gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
+            >
+              Writing Support App
+            </Title>
             <ActionIcon
               variant="outline"
               color={dark ? 'yellow' : 'blue'}
