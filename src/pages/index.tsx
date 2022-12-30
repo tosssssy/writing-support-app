@@ -10,7 +10,7 @@ import { useAiResults } from 'hooks/useAiResults'
 import { toSentences } from 'utils/sentence'
 
 export default function Home() {
-  const [richText, setRichText] = useState('<p>テキスト</p>')
+  const [richText, setRichText] = useState('')
   const sentences = useMemo(() => toSentences(richText), [richText])
   const [aiResults, setAiResults] = useAiResults(sentences)
 

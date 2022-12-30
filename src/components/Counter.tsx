@@ -11,10 +11,7 @@ export const Counter: FC<CounterProps> = ({ richText }) => {
   const selection = useTextSelection()
   return (
     <Flex gap={'xl'}>
-      {/* hydration error回避のためにSSR時には初期テキストの文字数を渡している */}
-      <Text size="sm">
-        文字数：{calcStringLengthFromRichText(richText) || 4}
-      </Text>
+      <Text size="sm">文字数：{calcStringLengthFromRichText(richText)}</Text>
 
       <Text
         size="sm"
