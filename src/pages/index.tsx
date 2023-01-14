@@ -1,4 +1,5 @@
 import { Paper, SimpleGrid, Stack } from '@mantine/core'
+import { useLocalStorage } from '@mantine/hooks'
 import { useMemo, useState } from 'react'
 import { AppLayout } from 'components/AppLayout'
 import { Counter } from 'components/Counter'
@@ -11,7 +12,10 @@ import { useAiResults } from 'hooks/useAiResults'
 import { toSentences } from 'utils/sentence'
 
 export default function Home() {
-  const [richText, setRichText] = useState('')
+  const [richText, setRichText] = useLocalStorage<string>({
+    key: 'richtext',
+    defaultValue: '',
+  })
   const sentences = useMemo(() => toSentences(richText), [richText])
   const [aiResults, setAiResults] = useAiResults(sentences)
 
