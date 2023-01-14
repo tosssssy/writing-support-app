@@ -19,7 +19,6 @@ export default async function handler(
         },
       )
 
-      console.log(response.ok)
       if (!response.ok) {
         return res.status(400).json({ massage: 'server error' })
       }
