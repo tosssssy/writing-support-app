@@ -1,4 +1,5 @@
 import { EditsRequest, EditsResponse } from './edits'
+import { MediaWikiRequest, MediaWikiResponse } from './mediawiki'
 import { HttpMethod } from 'utils/apiClient'
 
 type Schema<
@@ -12,7 +13,9 @@ export type Api = Schema<{
   // メソッド名: {
   //   url: [リクエストの型、レスポンスの型]
   // }
-  GET: {}
+  GET: {
+    '/api/media-wiki': [MediaWikiRequest, MediaWikiResponse]
+  }
   POST: {
     '/api/edits': [EditsRequest, EditsResponse]
   }

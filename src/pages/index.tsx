@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import { AppLayout } from 'components/AppLayout'
 import { Counter } from 'components/Counter'
 import { Editor } from 'components/Editor'
+import { Search } from 'components/Search'
 import { Settings } from 'components/Settings'
 import { Suggestions } from 'components/Suggestions'
 import { TabList } from 'components/TabList'
@@ -55,7 +56,7 @@ export default function Home() {
                 }}
               />
             )}
-            {activeTab === 'search' && <></>}
+            {activeTab === 'search' && <Search />}
             {activeTab === 'settings' && <Settings />}
           </Paper>
         </Stack>
