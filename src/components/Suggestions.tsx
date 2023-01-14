@@ -2,7 +2,6 @@ import {
   Box,
   Accordion,
   Flex,
-  CloseButton,
   List,
   Text,
   Popover,
@@ -12,7 +11,7 @@ import {
   Loader,
   Center,
 } from '@mantine/core'
-import { IconReplace } from '@tabler/icons'
+import { IconReplace, IconTrash } from '@tabler/icons'
 import { FC, useState } from 'react'
 import { AiResults } from 'types/common'
 
@@ -95,7 +94,12 @@ export const Suggestions: FC<SuggestionsProps> = ({
               <Accordion.Item key={result.key} value={result.key}>
                 <Flex align={'center'} mr="xs">
                   <Accordion.Control>{result.key}</Accordion.Control>
-                  <CloseButton onClick={() => onHidden(result.key)} />
+                  <ActionIcon
+                    variant="transparent"
+                    onClick={() => onHidden(result.key)}
+                  >
+                    <IconTrash size={16} />
+                  </ActionIcon>
                 </Flex>
 
                 <Accordion.Panel>
