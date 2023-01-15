@@ -1,6 +1,6 @@
 # アプリケーションの使い方
 
-![image](https://user-images.githubusercontent.com/65057976/212525202-199059ea-5079-494e-b75c-b6f2af4cb731.png)
+![image](https://user-images.githubusercontent.com/65057976/212525829-5f9089d2-1c32-44ab-a769-b06d2a4f5c64.png)
 
 ## 基本的な使い方
 
