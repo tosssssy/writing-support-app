@@ -124,7 +124,7 @@ export const fetchApi = async <T>(
     if (error instanceof ApiResponseError) {
       throw error
     }
-    console.error(error)
+    throw new Error('unknown error')
   }
 
   return result as T
