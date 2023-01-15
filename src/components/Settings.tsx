@@ -72,8 +72,8 @@ export const Settings: FC<SettingsProps> = ({}) => {
         <Divider my="sm" />
         <PasswordInput
           label="API キー"
-          description="呼び出し上限があるため、個人でAPIキーを設定すると安定してアプリを使用できます。"
-          placeholder="c8355hv47v5yt3hg"
+          description="APIキーに呼び出し上限があるため、個人で設定すると安定してアプリを使用できます。OpenAI社のAPIキーが必要です。"
+          placeholder="sk-fniubf8vb030ur023jh08fh3fjc8355hv47v5yt3hg"
           value={config.apiKey}
           onChange={e => handleChange({ apiKey: e.target.value })}
         />
