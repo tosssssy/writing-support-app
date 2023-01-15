@@ -20,11 +20,16 @@ export default async function handler(
       )
 
       if (!response.ok) {
-        return res.status(400).json({ massage: 'server error' })
+        throw new Error()
       }
-      return res.json(await response.json())
+
+      try {
+        return res.json(await response.json())
+      } catch (error) {
+        throw new Error()
+      }
     } catch (error) {
-      return res.status(400).json({ massage: 'server error' })
+      return res.status(500).json({ massage: 'server error' })
     }
   }
 }
