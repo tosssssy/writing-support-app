@@ -20,4 +20,3 @@
 - Next.js v13.0.5
 - TypeScript v4.9.3
 - Mantine v5.9.2
-- SWR v1.3.0
